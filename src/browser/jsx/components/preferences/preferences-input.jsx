@@ -4,12 +4,12 @@ import React from 'react';
 const allowedPropsOnInput = ['id', 'type', 'defaultValue', 'value'];
 
 /**
- * @class DocCode
+ * @class PreferencesInput
  * @extends ReactComponent
  * @property props
  */
 export default React.createClass({
-  displayName: 'PreferencesItem',
+  displayName: 'PreferencesInput',
   propTypes: {
     className: React.PropTypes.string,
     defaultValue: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number, React.PropTypes.bool]),

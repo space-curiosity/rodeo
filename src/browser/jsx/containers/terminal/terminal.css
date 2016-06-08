@@ -8,4 +8,5 @@
 .jqconsole-old-prompt,
 .jqconsole-output {
   display: block;
+  white-space: normal;
 }

@@ -7,7 +7,7 @@ import PreferencesSelect from './preferences-select.jsx';
 const preferenceDetailsItem = 'preference-group-details-item';
 
 /**
- * @class DocCode
+ * @class PreferencesItem
  * @extends ReactComponent
  * @property props
  */
