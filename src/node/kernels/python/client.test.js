@@ -81,6 +81,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('evals', function () {
+        this.timeout(10000);
         return fn('[]').then(function (result) {
           expect(result).to.deep.equal([]);
         });
@@ -142,6 +143,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('recognizes "print"', function () {
+        this.timeout(10000);
         const code = 'print "Hello"',
           cursorPos = 4;
 
@@ -166,6 +168,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('inspects', function () {
+        this.timeout(10000);
         const convert = new AsciiToHtml(),
           code = 'obj_or_dict = {"akey": "value", "another": "value2"}',
           cursorPos = 0;
@@ -194,6 +197,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('print "Hello" is complete with no extra information', function () {
+        this.timeout(10000);
         const code = 'print "Hello"';
 
         return fn(code).then(function (result) {
@@ -202,6 +206,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('print "Hello is invalid with no extra information', function () {
+        this.timeout(10000);
         const code = 'print "Hello';
 
         return fn(code).then(function (result) {
@@ -210,6 +215,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('x = range(10 is incomplete with empty indent', function () {
+        this.timeout(10000);
         const code = 'x = range(10';
 
         return fn(code).then(function (result) {
@@ -254,6 +260,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 4', function () {
+        this.timeout(10000);
         const expectedResult = {status: 'ok', user_expressions: {}};
 
         client.on('input_request', function () {
@@ -266,6 +273,7 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 5 returns NameError', function () {
+        this.timeout(10000);
         return fn.call(client, example5).then(function (result) {
           sinon.assert.match(result, {
             status: 'error', user_expressions: {},

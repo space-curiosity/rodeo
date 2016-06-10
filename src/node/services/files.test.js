@@ -98,7 +98,11 @@ describe(dirname + '/' + filename, function () {
       fs.lstat.yields(null, expectedStats);
 
       return fn(filename).reflect().then(function (result) {
-        expect(result.value()).to.deep.equal(expectedResult);
+        let value = result.value();
+
+        _.each(value, item => item.path = item.path.replace('\\', '/'));
+
+        expect(value).to.deep.equal(expectedResult);
       });
     });
 

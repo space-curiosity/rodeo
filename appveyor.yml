@@ -6,8 +6,12 @@
   environment:
     matrix:
     # node.js
-    - nodejs_version: "4.2.3"
-    - nodejs_version: "6"
+    - PYTHON: "C:\\Python27"
+      PYTHON_VERSION: "2.7"
+      PYTHON_ARCH: "64"
+      CONDA_PY: "27"
+      CONDA_NPY: "18"
+      nodejs_version: "4.2.3"
   os: unstable
   platform:
     - x64
@@ -19,14 +23,19 @@
   init:
     - git config --global core.autocrlf input
   install:
+    - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+    - pip install -q jupyter
+    - pip install -q numpy matplotlib plotly toyplot ipywidgets==4.1.1 pandas
     - ps: Install-Product node $env:nodejs_version $env:platform
     - git reset --hard HEAD
     - npm install npm -g
     - npm install
     - npm prune
   test_script:
+    - python --version
     - node --version
     - npm --version
     - npm test
+  artifacts:
+    - path: dist\*
   build: off
-
