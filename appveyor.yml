@@ -29,5 +29,4 @@
     - npm --version
     - npm test
   build: off
-  test: off
 
