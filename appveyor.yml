@@ -1,0 +1,33 @@
+-
+  branches:
+    only:
+      - appveyor
+  configuration: Release
+  environment:
+    matrix:
+    # node.js
+    - nodejs_version: "4.2.3"
+    - nodejs_version: "6"
+  os: unstable
+  platform:
+    - x64
+  cache:
+    - node_modules
+    - app\node_modules
+    - '%APPDATA%\npm-cache'
+    - '%USERPROFILE%\.electron'
+  init:
+    - git config --global core.autocrlf input
+  install:
+    - ps: Install-Product node $env:nodejs_version $env:platform
+    - git reset --hard HEAD
+    - npm install npm -g
+    - npm install
+    - npm prune
+  test_script:
+    - node --version
+    - npm --version
+    - npm test
+  build: off
+  test: off
+
