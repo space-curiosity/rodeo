@@ -8,6 +8,7 @@ const expect = require('chai').expect,
   client = require('../kernels/python/client');
 
 describe(dirname + '/' + filename, function () {
+  this.timeout(5000);
   let sandbox;
 
   beforeEach(function () {
@@ -64,7 +65,6 @@ describe(dirname + '/' + filename, function () {
     let python;
 
     before(function () {
-      this.timeout(10000);
       return client.create().then(function (client) {
         python = client;
       });

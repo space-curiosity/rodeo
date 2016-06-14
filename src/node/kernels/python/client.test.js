@@ -15,6 +15,7 @@ const AsciiToHtml = require('ansi-to-html'),
   example5 = fs.readFileSync(path.resolve('./test/mocks/jupyter_examples/example_5.py'), {encoding: 'UTF8'});
 
 describe(dirname + '/' + filename, function () {
+  this.timeout(5000);
   let sandbox;
 
   beforeEach(function () {
@@ -29,7 +30,6 @@ describe(dirname + '/' + filename, function () {
     const fn = lib[this.title];
 
     it('creates', function () {
-      this.timeout(10000);
       return fn().then(function (client) {
         expect(processes.getChildren().length).to.equal(1);
         return client.kill();
@@ -43,8 +43,6 @@ describe(dirname + '/' + filename, function () {
     const fn = lib[this.title];
 
     it('checks', function () {
-      this.timeout(10000);
-
       return fn({}).then(function (result) {
         expect(result).to.have.property('hasJupyterKernel').that.is.a('boolean');
         expect(result).to.have.property('cwd').that.is.a('string');
@@ -60,7 +58,6 @@ describe(dirname + '/' + filename, function () {
     let client;
 
     before(function () {
-      this.timeout(10000);
       return lib.create().then(function (newClient) {
         client = newClient;
       });
@@ -81,7 +78,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('evals', function () {
-        this.timeout(10000);
         return fn('[]').then(function (result) {
           expect(result).to.deep.equal([]);
         });
@@ -97,7 +93,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('gets docstrings when empty list', function () {
-        this.timeout(10000);
         return fn([]).then(function (result) {
           expect(result).to.deep.equal({
             name: 'stdout',
@@ -107,7 +102,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('gets docstrings with global names', function () {
-        this.timeout(10000);
         return fn(['sys']).then(function (result) {
           expect(result).to.deep.equal({
             name: 'stdout',
@@ -126,7 +120,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('gets variables when empty', function () {
-        this.timeout(10000);
         return fn([]).then(function (result) {
           expect(result).to.deep.equal({function: [], Series: [], list: [], DataFrame: [], other: [], dict: [], ndarray: []});
           expect(result).to.deep.equal({function: [], Series: [], list: [], DataFrame: [], other: [], dict: [], ndarray: []});
@@ -143,7 +136,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('recognizes "print"', function () {
-        this.timeout(10000);
         const code = 'print "Hello"',
           cursorPos = 4;
 
@@ -168,7 +160,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('inspects', function () {
-        this.timeout(10000);
         const convert = new AsciiToHtml(),
           code = 'obj_or_dict = {"akey": "value", "another": "value2"}',
           cursorPos = 0;
@@ -197,7 +188,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('print "Hello" is complete with no extra information', function () {
-        this.timeout(10000);
         const code = 'print "Hello"';
 
         return fn(code).then(function (result) {
@@ -206,7 +196,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('print "Hello is invalid with no extra information', function () {
-        this.timeout(10000);
         const code = 'print "Hello';
 
         return fn(code).then(function (result) {
@@ -215,7 +204,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('x = range(10 is incomplete with empty indent', function () {
-        this.timeout(10000);
         const code = 'x = range(10';
 
         return fn(code).then(function (result) {
@@ -233,7 +221,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 1', function () {
-        this.timeout(20000);
         const expectedResult = {status: 'ok', user_expressions: {}};
 
         return fn.call(client, example1).then(function (result) {
@@ -242,7 +229,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 2', function () {
-        this.timeout(10000);
         const expectedResult = {status: 'ok', user_expressions: {}};
 
         return fn.call(client, example2).then(function (result) {
@@ -251,7 +237,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 3', function () {
-        this.timeout(10000);
         const expectedResult = {status: 'ok', user_expressions: {}};
 
         return fn.call(client, example3).then(function (result) {
@@ -260,7 +245,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 4', function () {
-        this.timeout(10000);
         const expectedResult = {status: 'ok', user_expressions: {}};
 
         client.on('input_request', function () {
@@ -273,7 +257,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 5 returns NameError', function () {
-        this.timeout(10000);
         return fn.call(client, example5).then(function (result) {
           sinon.assert.match(result, {
             status: 'error', user_expressions: {},
@@ -292,8 +275,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 1', function () {
-        this.timeout(20000);
-
         return fn.call(client, example1).then(function (result) {
           expect(result).to.have.property('data').that.is.an('object')
             .with.property('image/png').that.is.an('string');
@@ -303,8 +284,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 2', function () {
-        this.timeout(10000);
-
         return fn.call(client, example2).then(function (result) {
           expect(result).to.have.property('data').that.is.an('object')
             .with.property('text/html').that.is.an('string');
@@ -314,8 +293,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 3', function () {
-        this.timeout(10000);
-
         return fn.call(client, example3).then(function (result) {
           expect(result).to.have.property('data').that.is.an('object')
             .with.property('text/plain').that.is.an('string');
@@ -327,8 +304,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 4', function () {
-        this.timeout(10000);
-
         client.on('input_request', function () {
           client.input('stuff!');
         });
@@ -339,8 +314,6 @@ describe(dirname + '/' + filename, function () {
       });
 
       it('example 5 returns chart on error (even though it is blank)', function () {
-        this.timeout(10000);
-
         return fn.call(client, example2).then(function (result) {
           expect(result).to.have.property('data').that.is.an('object')
             .with.property('text/html').that.is.an('string');

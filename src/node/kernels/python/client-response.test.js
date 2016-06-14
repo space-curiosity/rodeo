@@ -70,16 +70,18 @@ describe(dirname + '/' + filename, function () {
     it('reports output from request with broadcast (not silent)', function () {
       const emitSpy = sinon.spy(),
         resolveSpy = sinon.spy(),
-        deferred = {resolve: resolveSpy},
         successEvent = 'yay!',
-        requestMap = {abc: {deferred, successEvent}},
-        client = {emit: emitSpy, requestMap},
-        source = 'some source',
+        client = {emit: emitSpy, requestMap: {abc: {deferred: {resolve: resolveSpy}, successEvent}}},
         content = {someValue: 'something really important'},
-        response = {source, result: {msg_type: successEvent, content, parent_header: {msg_id: 'def'}}};
+        response = {
+          source: 'some source',
+          result: {msg_type: successEvent, content, parent_header: {msg_id: 'def'}}
+        };
 
       fn(client, {source: 'link', id: 'abc', result: 'def'}); // request link
       fn(client, response);
+
+      console.log('HEY', resolveSpy.args);
 
       sinon.assert.calledWith(resolveSpy, content);
       sinon.assert.calledOnce(emitSpy);
