@@ -60,9 +60,9 @@ export function errorCaught(error) {
 }
 
 export default {
+  checkForUpdates,
   errorCaught,
   quit,
-  toggleDevTools,
-  checkForUpdates,
-  quitAndInstallUpdates
+  quitAndInstallUpdates,
+  toggleDevTools
 };
